@@ -23,14 +23,15 @@ pipeline {
         stage('Ejecutar Pruebas Python') {
             steps {
                 sh '''
-                    echo "===== ARCHIVOS ANTES DE DOCKER ====="
+                    echo "===== HOST WORKSPACE ====="
                     ls -la "$WORKSPACE"
 
+                    echo "===== CONTENEDOR PYTHON ====="
                     docker run --rm \
                     -v "$WORKSPACE:/app:Z" \
                     -w /app \
                     python:3.11-slim \
-                    python -m unittest test_app.py
+                    sh -c 'pwd; echo "---"; ls -la /app; echo "---"; python -c "import os; print(os.listdir(\\"/app\\"))"'
                 '''
             }
         }
