@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clonar Código') {
             steps {
-            checkout scm
+                checkout scm
             }
         }
 
@@ -12,8 +12,8 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm \
-                    --volumes-from jenkins \
-                    -w /var/jenkins_home/workspace/5Oct \
+                    -v "$WORKSPACE:/app" \
+                    -w /app \
                     python:3.11-slim \
                     python -m unittest test_app.py
                 '''
