@@ -1,39 +1,31 @@
+```groovy
 pipeline {
     agent any
 
     stages {
+
         stage('Clonar Código') {
             steps {
                 checkout scm
-
-                sh '''
-                    echo "===== WORKSPACE ====="
-                    pwd
-
-                    echo "===== ARCHIVOS ====="
-                    ls -la
-
-                    echo "===== CONTENIDO GIT ====="
-                    git status
-                    git log -1 --oneline
-                '''
             }
         }
 
         stage('Ejecutar Pruebas Python') {
             steps {
                 sh '''
-                    echo "===== HOST WORKSPACE ====="
+                    echo "===== ARCHIVOS EN JENKINS ====="
                     ls -la "$WORKSPACE"
 
-                    echo "===== CONTENEDOR PYTHON ====="
+                    echo "===== PRUEBAS EN PYTHON ====="
+
                     docker run --rm \
-                    -v "$WORKSPACE:/app:Z" \
-                    -w /app \
-                    python:3.11-slim \
-                    sh -c 'pwd; echo "---"; ls -la /app; echo "---"; python -c "import os; print(os.listdir(\\"/app\\"))"'
+                        -v jenkins_home:/jenkins_home \
+                        -w /jenkins_home/workspace/Repo_suma \
+                        python:3.11-slim \
+                        python -m unittest test_app.py
                 '''
             }
         }
     }
 }
+```
