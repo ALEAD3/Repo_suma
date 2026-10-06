@@ -27,12 +27,6 @@ pipeline {
                     ls -la "$WORKSPACE"
 
                     docker run --rm \
-                    -v "$WORKSPACE:/app" \
-                    -w /app \
-                    python:3.11-slim \
-                    ls -la /app
-
-                    docker run --rm \
                     -v "$WORKSPACE:/app:Z" \
                     -w /app \
                     python:3.11-slim \
