@@ -33,7 +33,7 @@ pipeline {
                     ls -la /app
 
                     docker run --rm \
-                    -v "$WORKSPACE:/app" \
+                    -v "$WORKSPACE:/app:Z" \
                     -w /app \
                     python:3.11-slim \
                     python -m unittest test_app.py
